@@ -1,4 +1,3 @@
-from pprint import pprint
 with open("Day 3/input.txt") as f:
     lines = ''.join([line[:-1] for line in f.readlines()])
 
@@ -34,6 +33,7 @@ def part_two():
 import time
 startTime = time.time()
 
+print("V1")
 print(f"Part one: {part_one(lines)}")
 print(f"Part two: {part_two()}")
 
