@@ -56,6 +56,7 @@ class Disk():
             self.map[start_file:start_file+len_file] = ["." for _ in range(len_file)]
 
     def get_empty_spots(self, map):
+        map = ["#" if x != "." else "." for x in map]
         return [(match.start(), match.end()) for match in re.finditer(r'\.+', "".join(map))]
     
     def find_first_point(self, p):
@@ -93,7 +94,6 @@ def part_one():
 
 def part_two():
     disk = Disk(copy.deepcopy(line))
-    print(disk)
     disk.compress_per_file()
     return disk.calculate_score()
 
