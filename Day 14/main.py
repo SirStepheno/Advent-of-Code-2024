@@ -85,12 +85,13 @@ def part_one():
 def part_two():
     grid = Grid(deepcopy(lines), 101, 103)
     # grid.calculate_paths()
-    # Got that all points loop in 10403, just watch what happens, saw an small tree, not whole thing, where I was searching for originaly
+    # Got that all points loop in 10403, that is manually doable, just watch what happens --> saw an small tree, not whole thing, where I was searching for originaly
     
     for x in range(10403):
         g = grid.export_as_grid()
         for i in range(3, len(g)):
             if "######" in "".join(g[i]) and "#####" in "".join(g[i]) and "####" in "".join(g[i-1]):
+                print(grid)
                 return x
         grid.forward()
 
