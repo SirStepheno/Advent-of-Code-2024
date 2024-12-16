@@ -1,5 +1,4 @@
-from copy import deepcopy
-with open("Day 15/test.txt") as f:
+with open("Day 15/input.txt") as f:
     lines = [list(line[:-1]) for line in f.readlines()]
     map = lines[:lines.index([])]
     movements = [x for row in lines[lines.index([])+1:] for x in list(row)]
@@ -50,7 +49,7 @@ class Grid():
             case "<": dest_x -= 1
             case ">": dest_x += 1
             case _: raise ValueError(f"Unknown direction {direction}")
-
+        
         dest = self.map[dest_y][dest_x]
         if dest == ".":
             if not check:
@@ -109,13 +108,13 @@ class Grid():
         return s
 
 def part_one():
-    grid = Grid(deepcopy(map), double = False)
+    grid = Grid(map, double = False)
     for movement in movements:
         grid.move(movement)
     return grid.calculate_gps()
 
 def part_two():
-    grid = Grid(deepcopy(map), double = True)
+    grid = Grid(map, double = True)
     for movement in movements:
         possible = grid.move(movement, check=True)
         if possible:
