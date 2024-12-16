@@ -125,6 +125,7 @@ import time
 
 startTime = time.time()
 
+# Don't run both at the same time!
 print(f"Part one: {part_one()}")
 print(f"Part two: {part_two()}")
 
