@@ -58,8 +58,6 @@ def part_two():
 
         amount_bytes += 1
 
-
-
 import time
 startTime = time.time()
 
