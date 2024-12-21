@@ -45,8 +45,6 @@ class Graph:
 
         raise ValueError("Should not happen!")
 
-        
-
     def get_path(self, predecessors, start_vertex, end_vertex):
         path = []
         current = self.vertex_data.index(end_vertex)
@@ -57,7 +55,6 @@ class Graph:
                 path.insert(0, start_vertex)
                 break
         return path
-
 
 if __name__ == '__main__':
     # https://www.w3schools.com/dsa/dsa_algo_graphs_dijkstra.php
