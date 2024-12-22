@@ -2,9 +2,7 @@ import os
 import sys
 sys.path.insert(1, os.path.join(sys.path[0], '..'))
 from helper.dijkstra import Graph
-
-import numpy as np
-from pprint import pprint
+from itertools import product
 
 with open("Day 20/input.txt") as f:
     grid = [list(line[:-1]) for line in f.readlines()]
@@ -53,11 +51,9 @@ def create_graph():
 
 def create_route_grid(route):
     route_grid = [[-1 for x in range(len(grid[0]))] for y in range(len(grid))]
-    i = 0
-    for point in route:
+    for i, point in enumerate(route):
         x,y = [int(p) for p in point.split(",")]
         route_grid[y][x] = i
-        i += 1
     return route_grid
 
 def add_dict(d, key):
@@ -67,40 +63,34 @@ def add_dict(d, key):
         d[key] = 1
     return d
 
-def count_diff(route_grid):
+def count_diff(coords_to_check):
     # Just change this function to check every combination of x and y with an 20 total max (almost an circle)
     d = {}
-
     for y in range(len(route_grid)):
-        for x in range(len(route_grid[0])):
+        for x in range(len(route_grid[0])):            
             if route_grid[y][x] < 0:
                 continue
-
-            if x - 2 >= 0 and route_grid[y][x-2] >= 0 and route_grid[y][x-2] > route_grid[y][x]:
-                d = add_dict(d,route_grid[y][x-2]-route_grid[y][x]-2)
-
-            if x + 2 < len(route_grid[0]) and route_grid[y][x+2] >= 0 and route_grid[y][x+2] > route_grid[y][x]:
-                d = add_dict(d,route_grid[y][x+2]-route_grid[y][x]-2)
             
-            if y - 2 >= 0 and route_grid[y-2][x] >= 0 and route_grid[y-2][x] > route_grid[y][x]:
-                d = add_dict(d,route_grid[y-2][x]-route_grid[y][x]-2)
+            for coord_to_check in coords_to_check:
+                if 0 <= x + coord_to_check[0] < len(route_grid[0]) and 0 <= y + coord_to_check[1] < len(route_grid):
+                    if route_grid[y+coord_to_check[1]][x+coord_to_check[0]] > route_grid[y][x]:
+                        # Difference between to end cheat coord minus start cheat coord subtract the time it cost to excecute the cheat
+                        cheated_ps = route_grid[y + coord_to_check[1]][x + coord_to_check[0]] - route_grid[y][x] - (abs(coord_to_check[0])+abs(coord_to_check[1]))                                        
+                        d = add_dict(d,cheated_ps)
 
-            if y + 2 < len(route_grid) and route_grid[y+2][x] >= 0 and route_grid[y+2][x] > route_grid[y][x]:
-                d = add_dict(d,route_grid[y+2][x]-route_grid[y][x]-2)
     return d
-                
-def part_one():
-    grid, start, stop = create_graph()
-    distance, path = grid.dijkstra(f'{start[0]},{start[1]}', f'{stop[0]},{stop[1]}')
-    route_grid = create_route_grid(path)
-    print(np.array(route_grid))
 
-    d = count_diff(route_grid)
-    pprint(d)
-    return sum([value for key, value in d.items() if key >= 100])
+graph, start, stop = create_graph()
+distance, path = graph.dijkstra(f'{start[0]},{start[1]}', f'{stop[0]},{stop[1]}')
+route_grid = create_route_grid(path)
+
+def part_one():
+    all_cheats = [tuple([x,y]) for x,y in product(range(-2,3), repeat=2) if abs(x)+abs(y) <= 2]
+    return sum([value for key, value in count_diff(all_cheats).items() if key >= 100])
 
 def part_two():
-    pass
+    all_cheats = [tuple([x,y]) for x,y in product(range(-20,21), repeat=2) if abs(x)+abs(y) <= 20]
+    return sum([value for key, value in count_diff(all_cheats).items() if key >= 100])
 
 import time
 startTime = time.time()
