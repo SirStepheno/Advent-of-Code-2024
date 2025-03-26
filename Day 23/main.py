@@ -1,6 +1,6 @@
 from pprint import pprint
 
-with open("Day 23/input.txt") as f:
+with open("Day 23/test.txt") as f:
     lines = [line[:-1].split("-") for line in f.readlines()]
 
 class Internet():
@@ -43,12 +43,13 @@ def part_two():
     internet = Internet(list(set([end for link in lines for end in link])))
     for link in lines:
         internet.add_undir_link(link)
+    pprint(internet.members)
 
 
 import time
 startTime = time.time()
 
-print(f"Part one: {part_one()}")
+# print(f"Part one: {part_one()}")
 print(f"Part two: {part_two()}")
 
 executionTime = (time.time() - startTime)
